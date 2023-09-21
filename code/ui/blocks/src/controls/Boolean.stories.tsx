@@ -1,6 +1,5 @@
-import { expect } from '@storybook/jest';
+import { expect, within, fireEvent } from '@storybook/test';
 import type { Meta, StoryObj } from '@storybook/react';
-import { within, fireEvent } from '@storybook/testing-library';
 import { addons } from '@storybook/preview-api';
 import { RESET_STORY_ARGS, STORY_ARGS_UPDATED } from '@storybook/core-events';
 import { BooleanControl } from './Boolean';
@@ -52,7 +51,7 @@ export const Toggling: StoryObj<typeof BooleanControl> = {
     const canvas = within(canvasElement);
 
     // from Undefined to False
-    const setBooleanControl = canvas.getByText('Set boolean');
+    const setBooleanControl = await canvas.getByText('Set boolean');
     await fireEvent.click(setBooleanControl);
 
     let toggle = await canvas.findByTitle('Change to true');

@@ -1,9 +1,8 @@
+import { userEvent, within, expect } from '@storybook/test';
 /// <reference types="@types/jest" />;
 /// <reference types="@testing-library/jest-dom" />;
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import { userEvent, within } from '@storybook/testing-library';
-import { expect } from '@storybook/jest';
 import { Canvas, SourceState } from '../Canvas';
 import { Story as StoryComponent } from '../Story';
 import * as ButtonStories from '../../examples/Button.stories';
@@ -206,6 +205,6 @@ export const MixedChildrenStories: Story = {
     const canvas = within(args.canvasElement);
 
     // Assert - only find two headlines, those in the story, and none in the source code
-    expect(canvas.queryAllByText(/Headline for /i)).toHaveLength(2);
+    await expect(await canvas.queryAllByText(/Headline for /i)).toHaveLength(2);
   },
 };

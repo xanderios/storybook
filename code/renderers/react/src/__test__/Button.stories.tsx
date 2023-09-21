@@ -1,5 +1,5 @@
 import React from 'react';
-import { within, userEvent } from '@storybook/testing-library';
+import { within, userEvent } from '@storybook/test';
 import type { StoryFn as CSF2Story, StoryObj as CSF3Story, Meta } from '..';
 
 import type { ButtonProps } from './Button';
@@ -84,7 +84,7 @@ export const CSF3InputFieldFilled: CSF3Story = {
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
     await step('Step label', async () => {
-      await userEvent.type(canvas.getByTestId('input'), 'Hello world!');
+      await userEvent.type(await canvas.getByTestId('input'), 'Hello world!');
     });
   },
 };

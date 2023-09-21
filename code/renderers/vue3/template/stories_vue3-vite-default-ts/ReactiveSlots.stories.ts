@@ -1,6 +1,5 @@
-import { expect } from '@storybook/jest';
 import { global as globalThis } from '@storybook/global';
-import { within } from '@storybook/testing-library';
+import { within, expect } from '@storybook/test';
 import { STORY_ARGS_UPDATED, RESET_STORY_ARGS, UPDATE_STORY_ARGS } from '@storybook/core-events';
 import { h } from 'vue';
 import type { Meta, StoryObj } from '@storybook/vue3';
@@ -34,8 +33,12 @@ export const SimpleSlotTest: Story = {
     await new Promise((resolve) => {
       channel.once(STORY_ARGS_UPDATED, resolve);
     });
-    await expect(canvas.getByTestId('footer-slot').innerText).toContain('Footer VNode Slot');
-    await expect(canvas.getByTestId('default-slot').innerText).toContain('Default Text Slot');
+    await expect((await canvas.getByTestId('footer-slot')).innerText).toContain(
+      'Footer VNode Slot'
+    );
+    await expect((await canvas.getByTestId('default-slot')).innerText).toContain(
+      'Default Text Slot'
+    );
 
     await channel.emit(UPDATE_STORY_ARGS, {
       storyId: id,
@@ -47,10 +50,10 @@ export const SimpleSlotTest: Story = {
     await new Promise((resolve) => {
       channel.once(STORY_ARGS_UPDATED, resolve);
     });
-    await expect(canvas.getByTestId('default-slot').innerText).toContain(
+    await expect((await canvas.getByTestId('default-slot')).innerText).toContain(
       'Default Text Slot Updated'
     );
-    await expect(canvas.getByTestId('footer-slot').innerText).toContain(
+    await expect((await canvas.getByTestId('footer-slot')).innerText).toContain(
       'Footer VNode Slot Updated'
     );
   },
@@ -72,11 +75,15 @@ export const NamedSlotTest: Story = {
     await new Promise((resolve) => {
       channel.once(STORY_ARGS_UPDATED, resolve);
     });
-    await expect(canvas.getByTestId('header-slot').innerText).toContain(
+    await expect((await canvas.getByTestId('header-slot')).innerText).toContain(
       'Header title from the slot'
     );
-    await expect(canvas.getByTestId('default-slot').innerText).toContain('Default Text Slot');
-    await expect(canvas.getByTestId('footer-slot').innerText).toContain('Footer VNode Slot');
+    await expect((await canvas.getByTestId('default-slot')).innerText).toContain(
+      'Default Text Slot'
+    );
+    await expect((await canvas.getByTestId('footer-slot')).innerText).toContain(
+      'Footer VNode Slot'
+    );
 
     await channel.emit(UPDATE_STORY_ARGS, {
       storyId: id,
@@ -88,10 +95,10 @@ export const NamedSlotTest: Story = {
     await new Promise((resolve) => {
       channel.once(STORY_ARGS_UPDATED, resolve);
     });
-    await expect(canvas.getByTestId('default-slot').innerText).toContain(
+    await expect((await canvas.getByTestId('default-slot')).innerText).toContain(
       'Default Text Slot Updated'
     );
-    await expect(canvas.getByTestId('footer-slot').innerText).toContain(
+    await expect((await canvas.getByTestId('footer-slot')).innerText).toContain(
       'Footer VNode Slot Updated'
     );
   },
@@ -122,6 +129,6 @@ export const SlotWithRenderFn: Story = {
     await new Promise((resolve) => {
       channel.once(STORY_ARGS_UPDATED, resolve);
     });
-    await expect(canvas.getByTestId('layout').innerText).toContain('Default Text Slot');
+    await expect((await canvas.getByTestId('layout')).innerText).toContain('Default Text Slot');
   },
 };

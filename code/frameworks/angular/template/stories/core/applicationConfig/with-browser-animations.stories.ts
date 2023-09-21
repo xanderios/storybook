@@ -1,7 +1,6 @@
+import { within, userEvent, expect } from '@storybook/test';
 import { Meta, StoryObj, applicationConfig } from '@storybook/angular';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { within, userEvent } from '@storybook/testing-library';
-import { expect } from '@storybook/jest';
 import { importProvidersFrom } from '@angular/core';
 import { OpenCloseComponent } from '../moduleMetadata/angular-src/open-close-component/open-close.component';
 
@@ -30,11 +29,11 @@ export const WithBrowserAnimations: Story = {
   }),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const opened = canvas.getByText('The box is now Open!');
+    const opened = await canvas.getByText('The box is now Open!');
     expect(opened).toBeDefined();
-    const submitButton = canvas.getByRole('button');
+    const submitButton = await canvas.getByRole('button');
     await userEvent.click(submitButton);
-    const closed = canvas.getByText('The box is now Closed!');
+    const closed = await canvas.getByText('The box is now Closed!');
     expect(closed).toBeDefined();
   },
 };

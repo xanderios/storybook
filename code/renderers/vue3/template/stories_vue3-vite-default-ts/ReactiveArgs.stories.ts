@@ -1,7 +1,6 @@
-import { expect } from '@storybook/jest';
 import { global as globalThis } from '@storybook/global';
 import type { Meta, StoryObj, StoryFn } from '@storybook/vue3';
-import { within, userEvent } from '@storybook/testing-library';
+import { within, userEvent, expect } from '@storybook/test';
 import { UPDATE_STORY_ARGS, STORY_ARGS_UPDATED, RESET_STORY_ARGS } from '@storybook/core-events';
 
 import ReactiveArgs from './ReactiveArgs.vue';
@@ -42,7 +41,7 @@ export const ReactiveTest: Story = {
     await new Promise((resolve) => {
       channel.once(STORY_ARGS_UPDATED, resolve);
     });
-    await expect(canvas.getByRole('button')).toHaveTextContent('updated 1');
+    await expect(await canvas.getByRole('button')).toHaveTextContent('updated 1');
 
     await userEvent.click(reactiveButton); // click to update the label to increment the count + 1
     await expect(reactiveButton).toHaveTextContent('updated 2');
@@ -80,7 +79,7 @@ export const ReactiveHtmlWrapper: Story = {
     await new Promise((resolve) => {
       channel.once(STORY_ARGS_UPDATED, resolve);
     });
-    await expect(canvas.getByRole('button')).toHaveTextContent('updated Wrapped Button 1');
+    await expect(await canvas.getByRole('button')).toHaveTextContent('updated Wrapped Button 1');
 
     await userEvent.click(reactiveButton); // click to update the label to increment the count + 1
     await expect(reactiveButton).toHaveTextContent('updated Wrapped Button 2');
@@ -130,7 +129,7 @@ ReactiveCSF2Wrapper.play = async ({ canvasElement, id }) => {
   await new Promise((resolve) => {
     channel.once(STORY_ARGS_UPDATED, resolve);
   });
-  await expect(canvas.getByRole('button')).toHaveTextContent('updated CSF2 Wrapped Button 1');
+  await expect(await canvas.getByRole('button')).toHaveTextContent('updated CSF2 Wrapped Button 1');
 
   await userEvent.click(reactiveButton); // click to update the label to increment the count + 1
   await expect(reactiveButton).toHaveTextContent('updated CSF2 Wrapped Button 2');

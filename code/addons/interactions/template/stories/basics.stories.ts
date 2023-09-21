@@ -1,17 +1,18 @@
 import { global as globalThis } from '@storybook/global';
 import {
+  expect,
   within,
   waitFor,
   fireEvent,
   userEvent,
   waitForElementToBeRemoved,
-} from '@storybook/testing-library';
-import { expect } from '@storybook/jest';
+  fn,
+} from '@storybook/test';
 
 export default {
   component: globalThis.Components.Form,
-  argTypes: {
-    onSuccess: { type: 'function' },
+  args: {
+    onSuccess: fn(),
   },
 };
 
@@ -20,7 +21,7 @@ export const Validation = {
     const { args, canvasElement, step } = context;
     const canvas = within(canvasElement);
 
-    await step('Submit', async () => fireEvent.click(canvas.getByRole('button')));
+    await step('Submit', async () => fireEvent.click(await canvas.getByRole('button')));
 
     await expect(args.onSuccess).not.toHaveBeenCalled();
   },
@@ -29,7 +30,7 @@ export const Validation = {
 export const Type = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await userEvent.type(canvas.getByTestId('value'), 'foobar');
+    await userEvent.type(await canvas.getByTestId('value'), 'foobar');
   },
 };
 
@@ -42,9 +43,9 @@ export const Step = {
 export const TypeAndClear = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await userEvent.type(canvas.getByTestId('value'), 'initial value');
-    await userEvent.clear(canvas.getByTestId('value'));
-    await userEvent.type(canvas.getByTestId('value'), 'final value');
+    await userEvent.type(await canvas.getByTestId('value'), 'initial value');
+    await userEvent.clear(await canvas.getByTestId('value'));
+    await userEvent.type(await canvas.getByTestId('value'), 'final value');
   },
 };
 
@@ -54,7 +55,7 @@ export const Callback = {
     await step('Enter value', Type.play);
 
     await step('Submit', async () => {
-      await fireEvent.click(canvas.getByRole('button'));
+      await fireEvent.click(await canvas.getByRole('button'));
     });
 
     await expect(args.onSuccess).toHaveBeenCalled();

@@ -1,7 +1,6 @@
-import { expect } from '@storybook/jest';
 import { global as globalThis } from '@storybook/global';
 import type { Channel } from '@storybook/channels';
-import { within } from '@storybook/testing-library';
+import { within, expect } from '@storybook/test';
 import { UPDATE_STORY_ARGS, STORY_ARGS_UPDATED, RESET_STORY_ARGS } from '@storybook/core-events';
 
 import type { Meta, StoryObj } from '@storybook/vue3';
@@ -33,7 +32,7 @@ export const Basic: Story = {
 
     await channel.emit(RESET_STORY_ARGS, { storyId: id });
     await new Promise((resolve) => channel.once(STORY_ARGS_UPDATED, resolve));
-    await expect(canvas.getByTestId('scoped-slot').innerText).toMatch(
+    await expect((await canvas.getByTestId('scoped-slot')).innerText).toMatch(
       'Hello Storybook Day from the slot, 2022'
     );
 
@@ -48,7 +47,7 @@ export const Basic: Story = {
       channel.once(STORY_ARGS_UPDATED, resolve);
     });
 
-    await expect(canvas.getByTestId('scoped-slot').innerText).toMatch(
+    await expect((await canvas.getByTestId('scoped-slot')).innerText).toMatch(
       'Hello Storybook Day updated from the slot, 2023'
     );
   },

@@ -1,6 +1,5 @@
-import { expect } from '@storybook/jest';
 import type { Meta, StoryObj } from '@storybook/react';
-import { within, fireEvent } from '@storybook/testing-library';
+import { within, fireEvent, expect } from '@storybook/test';
 import { addons } from '@storybook/preview-api';
 import { RESET_STORY_ARGS, STORY_ARGS_UPDATED } from '@storybook/core-events';
 import React from 'react';
@@ -107,10 +106,10 @@ export const Clicking: Story = {
 
     const canvas = within(canvasElement);
 
-    const button = canvas.getByText('Increment');
+    const button = await canvas.getByText('Increment');
     await fireEvent.click(button);
 
-    expect(canvas.getByText('Click count: 1')).toBeInTheDocument();
+    expect(await canvas.getByText('Click count: 1')).toBeInTheDocument();
   },
 };
 
